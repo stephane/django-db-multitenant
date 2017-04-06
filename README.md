@@ -6,7 +6,7 @@ of having a **single tenant per database**.
 This application is still experimental, but is being used in
 production by the author. Contributions and discussion are welcome.
 
-**Latest Version:** v0.1.3, September 10, 2016 ([changelog](CHANGELOG.md))
+([Read the Changelog](CHANGELOG.md))
 
 ## Background
 
