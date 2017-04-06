@@ -67,7 +67,7 @@ def get_mapper():
             module_path, member_name = name.rsplit(".", 1)
             module = import_module(module_path)
             cls = getattr(module, member_name)
-        except (ValueError, ImportError, AttributeError)as e:
+        except (ValueError, ImportError, AttributeError) as e:
             raise ImportError("Could not import mapper: %s: %s" % (name, e))
 
         if not issubclass(cls, TenantMapper):
