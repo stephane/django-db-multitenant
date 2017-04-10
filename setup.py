@@ -9,7 +9,7 @@ README = 'README.md'
 # Change package name to publish my fork on Pypi while waiting for a new upstream release
 setup(
     name='webstack-django-db-multitenant',
-    version='0.9',
+    version='1.0',
     author=u'Stéphane Raimbault',
     author_email='stephane.raimbault@webstack.fr',
     packages=find_packages(),
