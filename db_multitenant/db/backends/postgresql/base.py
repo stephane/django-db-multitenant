@@ -21,11 +21,12 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+from django.conf import settings
 from django.db.utils import load_backend
 from django.core.exceptions import ImproperlyConfigured
 
 from db_multitenant.threadlocal import MultiTenantThreadlocal
+
 
 WRAPPED_BACKEND = load_backend('django.db.backends.postgresql_psycopg2')
 
@@ -60,8 +61,16 @@ class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
             cursor = super(DatabaseWrapper, self)._cursor()
 
         tenant_name = self.threadlocal.get_tenant_name()
+
         if not tenant_name:
-            raise ImproperlyConfigured('Tenant name not set at cursor create time.')
+            try:
+                if settings.TEST_MODE:
+                    tenant_name = settings.TENANT_NAME_FOR_TEST_MODE
+            except AttributeError:
+                pass
+
+            if not tenant_name:
+                raise ImproperlyConfigured('Tenant name not set at cursor create time.')
 
         # Cache the applied search_path.  Importantly, we assume no other
         # code in the app is executing `SET search_path`.
